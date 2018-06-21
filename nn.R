@@ -16,16 +16,14 @@ EuclidSq=0
 testlength = dim(iris)[1]-trainlength
 K_number_n_n=3
 sumclassificationelement=0
-counter=0
-percent_of_correct_predictions=0
 
 #Initialise the matrices
 train.X <- matrix(nrow =trainlength, ncol=number_of_attributes)
 test.X <- matrix(nrow =testlength, ncol=number_of_attributes)
-sumclassificationmatrix <-matrix(nrow =testlength, ncol=1)
+predicted.Y <-matrix(nrow =testlength, ncol=1)
 EuclidianMatrix <- matrix(nrow = trainlength, ncol = testlength)
 knnelements <- matrix(nrow = K_number_n_n, ncol = testlength)
-
+confusionmatrix <- matrix(c(0,0,0,0),nrow = 2, ncol=2)
 
 #loop creating the train.X and test.X matrices
 for(i in 1:number_of_attributes)
@@ -86,17 +84,42 @@ for (j in 1:testlength)#create a 1 by testlength matrix that has the  classifica
       print ("There is an error, there are the same amount of +1 and -1 classifications for the nearest neighbours")
     }
   }
-  sumclassificationmatrix[j]<-matrix(sumclassificationelement)#puts all the values into a matrix
+  predicted.Y[j]<-matrix(sumclassificationelement)#puts all the values into a matrix
   sumclassificationelement=0#resets the counter for each iteration 
 }
-#need to work on this next
-for(i in 1:testlength)#for loop to compare my predicted results with test.Y
-{
-  if (test.Y[i]==sumclassificationmatrix[i])#if statement to see if each element is the same
-  {
-    counter = counter +1#counts the number of correct predictions
-  }
-}
 
-percent_of_correct_predictions=(counter/testlength)*100
-cat ("The percentage of correct predictions for k =",K_number_n_n, "is",percent_of_correct_predictions)
+
+#confusion matrix {(a,b),(c,d)} where a= # predicted = -1 and test =-1, d = # predicted = 1 and test = 1, c = #predicted = 1 and test = -1
+#b = #predicted -1 and test = 1
+for (i in 1:testlength)
+  {
+    if(predicted.Y[i]==-1)
+      {
+        if(test.Y[i]==-1)
+          {
+            confusionmatrix[1,1]=confusionmatrix[1,1]+1
+          }
+        else 
+          {
+            confusionmatrix[1,2]=confusionmatrix[1,2]+1
+          }
+      }
+    else if(predicted.Y[i]==1)
+      {
+        if(test.Y[i]==1)
+          {
+            confusionmatrix[2,2]=confusionmatrix[2,2]+1
+          }
+        else
+          {
+            confusionmatrix[2,1]=confusionmatrix[2,1]+1
+          }
+      }
+  }
+
+
+
+
+
+
+
