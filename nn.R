@@ -89,7 +89,7 @@ for (j in 1:testlength)#create a 1 by testlength matrix that has the  classifica
   sumclassificationmatrix[j]<-matrix(sumclassificationelement)#puts all the values into a matrix
   sumclassificationelement=0#resets the counter for each iteration 
 }
-
+#need to work on this next
 for(i in 1:testlength)#for loop to compare my predicted results with test.Y
 {
   if (test.Y[i]==sumclassificationmatrix[i])#if statement to see if each element is the same
