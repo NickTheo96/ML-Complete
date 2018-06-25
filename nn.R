@@ -6,9 +6,10 @@
 # setwd("/Users/nick/R/Assignment1")
 
 #Load in the data set, no header, na strings just incase there are missing values
-dataset <- read.csv("ionosphere.txt",header=F, na.strings="?")
+#dataset <- read.csv("USPSsubset.txt",header=F, na.strings="?")
+dataset <- read.table("USPSsubset.txt",header=F, na.strings="?")
 
-trainlength =200#this must be specified by the user
+trainlength =100#this must be specified by the user
 #Initialise the values 
 number_of_attributes = dim(dataset)[2]-1
 EuclidSqSum=0
@@ -68,70 +69,73 @@ for (j in 1:testlength)
   }
 }
 
-#nested for loop that countes the number of plus and minus in the knnelement matrix for each column and then assignes a classification based on
-for(j in 1:testlength)#which ever scores higher 
-  {
-    for (i in 1:K_number_n_n)
-      {
-        if(train.Y[knnelements[i,j]]==1)
-          {
-            pluscounter = pluscounter +1#counts the number of +1 classification for each nearest number
-          }
-        else if(train.Y[knnelements[i,j]]==-1)
-          {
-            minuscounter = minuscounter +1
-          }
-        else
-          {
-            print ("Please pick an odd number for k")#accounts for any errors that might arrise when an even k is chosen
-          }
-      }
-  if (minuscounter > pluscounter)#decides if the predicted.Y classification should be either plus or minus 1 using the outer loop
-    {
-      predicted.Y[j]=-1
-    }
-      else if(minuscounter < pluscounter)
-    {
-      predicted.Y[j]=+1
-    }
-  minuscounter=0#resets the counter after the inner loop is performed
-  pluscounter=0
-}
 
 
-#confusionmatrix {(a,b),(c,d)} where a= # predicted = -1 and test =-1, d = # predicted = 1 and test = 1, c = #predicted = 1 and test = -1
-#b = #predicted -1 and test = 1
-for (i in 1:testlength)
-  {
-    if(predicted.Y[i]==-1)
-      {
-        if(test.Y[i]==-1)
-          {
-            confusionmatrix[1,1]=confusionmatrix[1,1]+1
-          }
-        else if(test.Y[i]==1)
-          {
-            confusionmatrix[1,2]=confusionmatrix[1,2]+1
-          }
-      }
-    else if(predicted.Y[i]==1)
-      {
-        if(test.Y[i]==1)
-          {
-            confusionmatrix[2,2]=confusionmatrix[2,2]+1
-          }
-        else if(test.Y[i]==-1)
-          {
-            confusionmatrix[2,1]=confusionmatrix[2,1]+1
-          }
-      }
-}
-
-##########knn built into R can be used to test whether my code works
-#library(class)
-#predicted.Y <- knn(train.X,test.X,train.Y,k=3)
-#table(predicted.Y,test.Y)
-########
+# 
+# #nested for loop that countes the number of plus and minus in the knnelement matrix for each column and then assignes a classification based on
+# for(j in 1:testlength)#which ever scores higher 
+#   {
+#     for (i in 1:K_number_n_n)
+#       {
+#         if(train.Y[knnelements[i,j]]==1)
+#           {
+#             pluscounter = pluscounter +1#counts the number of +1 classification for each nearest number
+#           }
+#         else if(train.Y[knnelements[i,j]]==-1)
+#           {
+#             minuscounter = minuscounter +1
+#           }
+#         else
+#           {
+#             print ("Please pick an odd number for k")#accounts for any errors that might arrise when an even k is chosen
+#           }
+#       }
+#   if (minuscounter > pluscounter)#decides if the predicted.Y classification should be either plus or minus 1 using the outer loop
+#     {
+#       predicted.Y[j]=-1
+#     }
+#       else if(minuscounter < pluscounter)
+#     {
+#       predicted.Y[j]=+1
+#     }
+#   minuscounter=0#resets the counter after the inner loop is performed
+#   pluscounter=0
+# }
+# 
+# 
+# #confusionmatrix {(a,b),(c,d)} where a= # predicted = -1 and test =-1, d = # predicted = 1 and test = 1, c = #predicted = 1 and test = -1
+# #b = #predicted -1 and test = 1
+# for (i in 1:testlength)
+#   {
+#     if(predicted.Y[i]==-1)
+#       {
+#         if(test.Y[i]==-1)
+#           {
+#             confusionmatrix[1,1]=confusionmatrix[1,1]+1
+#           }
+#         else if(test.Y[i]==1)
+#           {
+#             confusionmatrix[1,2]=confusionmatrix[1,2]+1
+#           }
+#       }
+#     else if(predicted.Y[i]==1)
+#       {
+#         if(test.Y[i]==1)
+#           {
+#             confusionmatrix[2,2]=confusionmatrix[2,2]+1
+#           }
+#         else if(test.Y[i]==-1)
+#           {
+#             confusionmatrix[2,1]=confusionmatrix[2,1]+1
+#           }
+#       }
+# }
+# 
+# ##########knn built into R can be used to test whether my code works
+library(class)
+predicted.Y <- knn(train.X,test.X,train.Y,k=3)
+table(predicted.Y,test.Y)
+# ########
 
 
 
