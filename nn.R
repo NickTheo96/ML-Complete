@@ -20,6 +20,8 @@ sumclassificationelement=0
 pluscounter=0
 minuscounter=0
 
+
+
 #Initialise the matrices
 train.X <- matrix(nrow =trainlength, ncol=number_of_attributes)
 test.X <- matrix(nrow =testlength, ncol=number_of_attributes)
@@ -69,7 +71,20 @@ for (j in 1:testlength)
   }
 }
 
-
+for(i in 1:trainlength)
+{
+  for(j in 1:i)
+  {
+    if(train.Y[j]==train.Y[i])
+    {
+      break
+    }
+    else
+    {
+      train.Y[i]==classification[i]
+    }
+  }
+}
 
 # 
 # #nested for loop that countes the number of plus and minus in the knnelement matrix for each column and then assignes a classification based on
