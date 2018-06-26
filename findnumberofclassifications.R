@@ -4,14 +4,13 @@
 
 trainlength =9#this must be specified by the user
 
-mylist=c(6,10,5,4,9,120,4,6,10)
-classification=c()
+arr=c(6,10,5,4,9,120,4,6,10)
 
-for(i in 1:i<trainlength)
+for(i in 1:i<9)
 {
   for(j in 1:j<i)
   {
-    if(mylist[j] == mylist[i])
+    if(arr[j] == arr[i])
     {
       break
     }

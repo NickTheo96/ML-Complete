@@ -15,7 +15,7 @@ number_of_attributes = dim(dataset)[2]-1
 EuclidSqSum=0
 EuclidSq=0
 testlength = dim(dataset)[1]-trainlength
-K_number_n_n=3
+K_number_n_n=11
 sumclassificationelement=0
 pluscounter=0
 minuscounter=0
@@ -86,6 +86,34 @@ for(i in 1:trainlength)
   }
 }
 
+#find the number of elements in train.Y which is how many classifications there are
+#this can then be coded myself using a nested 4loop
+classification_elements <-unique(train.Y)
+
+#sortclassificationelements (should be implemented by myself later)
+#this is used to compare knn elements to ensure 
+sortclassification_elements <-sort(classification_elements)
+
+#should imply this later
+number_of_classifications=length(classification_elements)
+
+
+#finds the number of classifications
+counter <- matrix(0,nrow = number_of_classifications, ncol = testlength)
+
+for(j in 1:testlength)
+  {
+    for(i in 1:K_number_n_n)
+    {
+      for(k in 1: number_of_classifications)
+        {
+          if(train.Y[knnelements[i,j]]==sortclassification_elements[k])
+          {
+            counter[k,j]=counter[k,j]+1
+          }
+        }
+    }
+  }
 # 
 # #nested for loop that countes the number of plus and minus in the knnelement matrix for each column and then assignes a classification based on
 # for(j in 1:testlength)#which ever scores higher 
@@ -146,11 +174,11 @@ for(i in 1:trainlength)
 #       }
 # }
 # 
-# ##########knn built into R can be used to test whether my code works
-library(class)
-predicted.Y <- knn(train.X,test.X,train.Y,k=3)
-table(predicted.Y,test.Y)
-# ########
+# # ##########knn built into R can be used to test whether my code works
+# library(class)
+# predicted.Y <- knn(train.X,test.X,train.Y,k=3)
+# table(predicted.Y,test.Y)
+# # ########
 
 
 
