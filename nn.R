@@ -6,8 +6,8 @@
 # setwd("/Users/nick/R/Assignment1")
 
 #Load in the data set, no header, na strings just incase there are missing values
-dataset <- read.csv("ionosphere.txt",header=F, na.strings="?")
-#dataset <- read.table("USPSsubset.txt",header=F, na.strings="?")
+#dataset <- read.csv("iris.txt",header=F, na.strings="?")
+dataset <- read.table("USPSsubset.txt",header=F, na.strings="?")
 
 trainlength =70#this must be specified by the user
 #Initialise the values 
@@ -15,7 +15,7 @@ number_of_attributes = dim(dataset)[2]-1
 EuclidSqSum=0
 EuclidSq=0
 testlength = dim(dataset)[1]-trainlength
-K_number_n_n=3
+K_number_n_n=1
 
 
 #Initialise the matrices
@@ -116,36 +116,17 @@ for(j in 1:testlength)
       }
 }
 #predicted.Y works as intended however it does not acount for when the counter matrix predicts more than 1 value for
-#the classification
+#the classification (will use k=1 for now)
 
-# 
-# #confusionmatrix {(a,b),(c,d)} where a= # predicted = -1 and test =-1, d = # predicted = 1 and test = 1, c = #predicted = 1 and test = -1
-# #b = #predicted -1 and test = 1
-# for (i in 1:testlength)
-#   {
-#     if(predicted.Y[i]==-1)
-#       {
-#         if(test.Y[i]==-1)
-#           {
-#             confusionmatrix[1,1]=confusionmatrix[1,1]+1
-#           }
-#         else if(test.Y[i]==1)
-#           {
-#             confusionmatrix[1,2]=confusionmatrix[1,2]+1
-#           }
-#       }
-#     else if(predicted.Y[i]==1)
-#       {
-#         if(test.Y[i]==1)
-#           {
-#             confusionmatrix[2,2]=confusionmatrix[2,2]+1
-#           }
-#         else if(test.Y[i]==-1)
-#           {
-#             confusionmatrix[2,1]=confusionmatrix[2,1]+1
-#           }
-#       }
-#}
+confusionmatrix <- matrix(0,nrow = number_of_classifications, ncol=number_of_classifications)
+
+for(i in 1: testlength)
+{#match(c(-1),sortclassification_elements) finds the index of -1 in matrix sortclassification_elements 
+  #should later implement my own function
+  confusionmatrix[match(c(predicted.Y[i]),sortclassification_elements),match(c(test.Y[i]),sortclassification_elements)]=confusionmatrix[match(c(predicted.Y[i]),sortclassification_elements),match(c(test.Y[i]),sortclassification_elements)] + 1
+}
+
+
 
 # # ##########knn built into R can be used to test whether my code works
 # library(class)
