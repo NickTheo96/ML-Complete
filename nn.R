@@ -6,23 +6,22 @@
 # setwd("/Users/nick/R/Assignment1")
 
 #Load in the data set, no header, na strings just incase there are missing values
-dataset <- read.csv("ionosphere.txt",header=F, na.strings="?")
+#dataset <- read.csv("iris.txt",header=F, na.strings="?")
+dataset <- read.table("USPSsubset.txt",header=F, na.strings="?")
 
-trainlength =200#this must be specified by the user
+trainlength =70#this must be specified by the user
 #Initialise the values 
 number_of_attributes = dim(dataset)[2]-1
 EuclidSqSum=0
 EuclidSq=0
 testlength = dim(dataset)[1]-trainlength
-K_number_n_n=3
-sumclassificationelement=0
-pluscounter=0
-minuscounter=0
+K_number_n_n=1
+
 
 #Initialise the matrices
 train.X <- matrix(nrow =trainlength, ncol=number_of_attributes)
 test.X <- matrix(nrow =testlength, ncol=number_of_attributes)
-predicted.Y <-matrix(nrow =testlength, ncol=1)
+predicted.Y <-matrix(0,nrow =testlength, ncol=1)
 EuclidianMatrix <- matrix(nrow = trainlength, ncol = testlength)
 knnelements <- matrix(nrow = K_number_n_n, ncol = testlength)
 confusionmatrix <- matrix(c(0,0,0,0),nrow = 2, ncol=2)
@@ -68,70 +67,72 @@ for (j in 1:testlength)
   }
 }
 
-#nested for loop that countes the number of plus and minus in the knnelement matrix for each column and then assignes a classification based on
-for(j in 1:testlength)#which ever scores higher 
+#find the number of elements in train.Y which is how many classifications there are
+#this can then be coded myself using a nested 4loop
+classification_elements <-unique(train.Y)
+
+#sortclassificationelements (should be implemented by myself later)
+#this is used to compare knn elements to ensure 
+sortclassification_elements <-sort(classification_elements)
+
+#should imply this later
+number_of_classifications=length(classification_elements)
+
+
+#finds the number of classifications
+counter <- matrix(0,nrow = number_of_classifications, ncol = testlength)
+
+#nested for loop to tally the classifications for 
+for(j in 1:testlength)
   {
-    for (i in 1:K_number_n_n)
-      {
-        if(train.Y[knnelements[i,j]]==1)
-          {
-            pluscounter = pluscounter +1#counts the number of +1 classification for each nearest number
-          }
-        else if(train.Y[knnelements[i,j]]==-1)
-          {
-            minuscounter = minuscounter +1
-          }
-        else
-          {
-            print ("Please pick an odd number for k")#accounts for any errors that might arrise when an even k is chosen
-          }
-      }
-  if (minuscounter > pluscounter)#decides if the predicted.Y classification should be either plus or minus 1 using the outer loop
+    for(i in 1:K_number_n_n)
     {
-      predicted.Y[j]=-1
+      for(k in 1: number_of_classifications)
+        {
+          if(train.Y[knnelements[i,j]]==sortclassification_elements[k])
+          {
+            counter[k,j]=counter[k,j]+1
+          }
+        }
     }
-      else if(minuscounter < pluscounter)
-    {
-      predicted.Y[j]=+1
-    }
-  minuscounter=0#resets the counter after the inner loop is performed
-  pluscounter=0
 }
 
 
-#confusionmatrix {(a,b),(c,d)} where a= # predicted = -1 and test =-1, d = # predicted = 1 and test = 1, c = #predicted = 1 and test = -1
-#b = #predicted -1 and test = 1
-for (i in 1:testlength)
+
+for(j in 1:testlength)
   {
-    if(predicted.Y[i]==-1)
+    max=counter[1,j]#initialise the first maximum value
+    for(i in 2:number_of_classifications)#start looping from the second value
       {
-        if(test.Y[i]==-1)
-          {
-            confusionmatrix[1,1]=confusionmatrix[1,1]+1
-          }
-        else if(test.Y[i]==1)
-          {
-            confusionmatrix[1,2]=confusionmatrix[1,2]+1
-          }
-      }
-    else if(predicted.Y[i]==1)
-      {
-        if(test.Y[i]==1)
-          {
-            confusionmatrix[2,2]=confusionmatrix[2,2]+1
-          }
-        else if(test.Y[i]==-1)
-          {
-            confusionmatrix[2,1]=confusionmatrix[2,1]+1
-          }
+        if(max<counter[i,j])#if the first value is less than the ith value
+        {
+          max=counter[i,j]#maximum value updated
+          predicted.Y[j]=sortclassification_elements[i]#element this corersponds to also updated
+        }
+        else if(max==counter[1,j])#accounts for the first element being non zero such as -1
+        {#set i to 1 so  predicted.Y[j] is the first element
+          predicted.Y[j]=sortclassification_elements[1]
+        }
       }
 }
+#predicted.Y works as intended however it does not acount for when the counter matrix predicts more than 1 value for
+#the classification (will use k=1 for now)
 
-##########knn built into R can be used to test whether my code works
-#library(class)
-#predicted.Y <- knn(train.X,test.X,train.Y,k=3)
-#table(predicted.Y,test.Y)
-########
+confusionmatrix <- matrix(0,nrow = number_of_classifications, ncol=number_of_classifications)
+
+for(i in 1: testlength)
+{#match(c(-1),sortclassification_elements) finds the index of -1 in matrix sortclassification_elements 
+  #should later implement my own function
+  confusionmatrix[match(c(predicted.Y[i]),sortclassification_elements),match(c(test.Y[i]),sortclassification_elements)]=confusionmatrix[match(c(predicted.Y[i]),sortclassification_elements),match(c(test.Y[i]),sortclassification_elements)] + 1
+}
+
+
+
+# # ##########knn built into R can be used to test whether my code works
+# library(class)
+# predicted.Y <- knn(train.X,test.X,train.Y,k=3)
+# table(predicted.Y,test.Y)
+# # ########
 
 
 
