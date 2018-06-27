@@ -6,8 +6,8 @@
 # setwd("/Users/nick/R/Assignment1")
 
 #Load in the data set, no header, na strings just incase there are missing values
-#dataset <- read.csv("iris.txt",header=F, na.strings="?")
-dataset <- read.table("USPSsubset.txt",header=F, na.strings="?")
+dataset <- read.csv("iris.txt",header=F, na.strings="?")
+#dataset <- read.table("USPSsubset.txt",header=F, na.strings="?")
 
 trainlength =70#this must be specified by the user
 #Initialise the values 
@@ -15,7 +15,7 @@ number_of_attributes = dim(dataset)[2]-1
 EuclidSqSum=0
 EuclidSq=0
 testlength = dim(dataset)[1]-trainlength
-K_number_n_n=1
+K_number_n_n=3
 
 
 #Initialise the matrices
@@ -71,27 +71,30 @@ for (j in 1:testlength)
 #this can then be coded myself using a nested 4loop
 classification_elements <-unique(train.Y)
 
+
+####################################################Create code myself################################
 #sortclassificationelements (should be implemented by myself later)
 #this is used to compare knn elements to ensure 
 sortclassification_elements <-sort(classification_elements)
-
-#should imply this later
+#find number of classifications
 number_of_classifications=length(classification_elements)
+######################################################################################################
 
-
-#finds the number of classifications
+# numberofclassifaction by testlength matrix which will tally the predicted classification for each testset
 counter <- matrix(0,nrow = number_of_classifications, ncol = testlength)
 
-#nested for loop to tally the classifications for 
-for(j in 1:testlength)
+
+for(j in 1:testlength)#sums through each testset
   {
-    for(i in 1:K_number_n_n)
+    for(i in 1:K_number_n_n)#sum through k
     {
       for(k in 1: number_of_classifications)
-        {
+        {#the knnelement are summed through and the classification in train.Y is found, when this equals the
+#kth classification element the if statement is met 
           if(train.Y[knnelements[i,j]]==sortclassification_elements[k])
           {
-            counter[k,j]=counter[k,j]+1
+            counter[k,j]=counter[k,j]+1#this increments the kth classification of the jth testset by one to create a
+#tally of the classifications for a give number of k
           }
         }
     }
@@ -109,30 +112,36 @@ for(j in 1:testlength)
           max=counter[i,j]#maximum value updated
           predicted.Y[j]=sortclassification_elements[i]#element this corersponds to also updated
         }
-        else if(max==counter[1,j])#accounts for the first element being non zero such as -1
-        {#set i to 1 so  predicted.Y[j] is the first element
-          predicted.Y[j]=sortclassification_elements[1]
+        else if(max==counter[1,j])#accounts for the first element being non zero and so needing to be modified
+        {
+          predicted.Y[j]=sortclassification_elements[1]#the first element is modified correctly
         }
       }
 }
+#####################################################################################################################
 #predicted.Y works as intended however it does not acount for when the counter matrix predicts more than 1 value for
-#the classification (will use k=1 for now)
+#the classification (will use k=1 for now) for the 9 classification set
+#####################################################################################################################
 
-confusionmatrix <- matrix(0,nrow = number_of_classifications, ncol=number_of_classifications)
+confusionmatrix <- matrix(0,nrow = number_of_classifications, ncol=number_of_classifications)#initialise classification matrix
 
+########################################Later implement myself#############################################################
+#match(c(-1),sortclassification_elements) finds the index of -1 in the matrix sortclassification_elements 
+#should later implement my own function
+#####################################################################################################################
 for(i in 1: testlength)
-{#match(c(-1),sortclassification_elements) finds the index of -1 in matrix sortclassification_elements 
-  #should later implement my own function
+{
+  
   confusionmatrix[match(c(predicted.Y[i]),sortclassification_elements),match(c(test.Y[i]),sortclassification_elements)]=confusionmatrix[match(c(predicted.Y[i]),sortclassification_elements),match(c(test.Y[i]),sortclassification_elements)] + 1
 }
 
 
 
-# # ##########knn built into R can be used to test whether my code works
+######################################### knn built into R can be used to test whether my code works########################
 # library(class)
 # predicted.Y <- knn(train.X,test.X,train.Y,k=3)
 # table(predicted.Y,test.Y)
-# # ########
+# # #########################################################################################################################
 
 
 
