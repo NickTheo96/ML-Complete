@@ -6,26 +6,22 @@
 # setwd("/Users/nick/R/Assignment1")
 
 #Load in the data set, no header, na strings just incase there are missing values
-#dataset <- read.csv("USPSsubset.txt",header=F, na.strings="?")
-dataset <- read.table("USPSsubset.txt",header=F, na.strings="?")
+dataset <- read.csv("ionosphere.txt",header=F, na.strings="?")
+#dataset <- read.table("USPSsubset.txt",header=F, na.strings="?")
 
-trainlength =100#this must be specified by the user
+trainlength =70#this must be specified by the user
 #Initialise the values 
 number_of_attributes = dim(dataset)[2]-1
 EuclidSqSum=0
 EuclidSq=0
 testlength = dim(dataset)[1]-trainlength
-K_number_n_n=11
-sumclassificationelement=0
-pluscounter=0
-minuscounter=0
-
+K_number_n_n=3
 
 
 #Initialise the matrices
 train.X <- matrix(nrow =trainlength, ncol=number_of_attributes)
 test.X <- matrix(nrow =testlength, ncol=number_of_attributes)
-predicted.Y <-matrix(nrow =testlength, ncol=1)
+predicted.Y <-matrix(0,nrow =testlength, ncol=1)
 EuclidianMatrix <- matrix(nrow = trainlength, ncol = testlength)
 knnelements <- matrix(nrow = K_number_n_n, ncol = testlength)
 confusionmatrix <- matrix(c(0,0,0,0),nrow = 2, ncol=2)
@@ -71,21 +67,6 @@ for (j in 1:testlength)
   }
 }
 
-for(i in 1:trainlength)
-{
-  for(j in 1:i)
-  {
-    if(train.Y[j]==train.Y[i])
-    {
-      break
-    }
-    else
-    {
-      train.Y[i]==classification[i]
-    }
-  }
-}
-
 #find the number of elements in train.Y which is how many classifications there are
 #this can then be coded myself using a nested 4loop
 classification_elements <-unique(train.Y)
@@ -101,6 +82,7 @@ number_of_classifications=length(classification_elements)
 #finds the number of classifications
 counter <- matrix(0,nrow = number_of_classifications, ncol = testlength)
 
+#nested for loop to tally the classifications for 
 for(j in 1:testlength)
   {
     for(i in 1:K_number_n_n)
@@ -113,38 +95,29 @@ for(j in 1:testlength)
           }
         }
     }
-  }
-# 
-# #nested for loop that countes the number of plus and minus in the knnelement matrix for each column and then assignes a classification based on
-# for(j in 1:testlength)#which ever scores higher 
-#   {
-#     for (i in 1:K_number_n_n)
-#       {
-#         if(train.Y[knnelements[i,j]]==1)
-#           {
-#             pluscounter = pluscounter +1#counts the number of +1 classification for each nearest number
-#           }
-#         else if(train.Y[knnelements[i,j]]==-1)
-#           {
-#             minuscounter = minuscounter +1
-#           }
-#         else
-#           {
-#             print ("Please pick an odd number for k")#accounts for any errors that might arrise when an even k is chosen
-#           }
-#       }
-#   if (minuscounter > pluscounter)#decides if the predicted.Y classification should be either plus or minus 1 using the outer loop
-#     {
-#       predicted.Y[j]=-1
-#     }
-#       else if(minuscounter < pluscounter)
-#     {
-#       predicted.Y[j]=+1
-#     }
-#   minuscounter=0#resets the counter after the inner loop is performed
-#   pluscounter=0
-# }
-# 
+}
+
+
+
+for(j in 1:testlength)
+  {
+    max=counter[1,j]#initialise the first maximum value
+    for(i in 2:number_of_classifications)#start looping from the second value
+      {
+        if(max<counter[i,j])#if the first value is less than the ith value
+        {
+          max=counter[i,j]#maximum value updated
+          predicted.Y[j]=sortclassification_elements[i]#element this corersponds to also updated
+        }
+        else if(max==counter[1,j])#accounts for the first element being non zero such as -1
+        {#set i to 1 so  predicted.Y[j] is the first element
+          predicted.Y[j]=sortclassification_elements[1]
+        }
+      }
+}
+#predicted.Y works as intended however it does not acount for when the counter matrix predicts more than 1 value for
+#the classification
+
 # 
 # #confusionmatrix {(a,b),(c,d)} where a= # predicted = -1 and test =-1, d = # predicted = 1 and test = 1, c = #predicted = 1 and test = -1
 # #b = #predicted -1 and test = 1
@@ -172,8 +145,8 @@ for(j in 1:testlength)
 #             confusionmatrix[2,1]=confusionmatrix[2,1]+1
 #           }
 #       }
-# }
-# 
+#}
+
 # # ##########knn built into R can be used to test whether my code works
 # library(class)
 # predicted.Y <- knn(train.X,test.X,train.Y,k=3)
