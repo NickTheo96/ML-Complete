@@ -82,7 +82,7 @@ mu_plus_column <-matrix(0,nrow =number_of_attributes, ncol=1)
 for(i in 1:number_of_attributes)
 {
   mu_minus_column[i,1]=mu_minus[1,i]
-  mu_plus_column [i,1]=mu_minus[1,i]
+  mu_plus_column [i,1]=mu_plus[1,i]
 }
 
 inverseSigma =solve(sigma)#r function that finds the inverse of the matrix so that delta can be calculated 
