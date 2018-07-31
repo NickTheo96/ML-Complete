@@ -1,28 +1,32 @@
 library(leaps)
+library(ISLR)
+Hitters <- na.omit(Hitters)
 
-X = rnorm(100, mean = 0, sd = 1)
-epsilon = rnorm(100, mean = 0, sd = 1)
-Y=matrix(0,100,1)
+X <- rnorm(100)
+epsilon <- rnorm(100)
+library(leaps)
+beta0 <- 1
+beta1 <- 2
+beta2 <- -1
+beta3 <- 1
 
-
-for(i in 1:100)
-{
-  Y[i]=0.5+(0.6*X[i])+(0.7*(X[i]^2))+(0.8*(X[i]^3))+epsilon[i]
-}
-
-power = 3
-X_power_matrix=matrix(0,100,power)
-
-for(j in 1:100)
-{
-  for(i in 1:power)
-  {
-    X_power_matrix[j,i]=X[j]^i
-  } 
-}
-
-dataset <- data.frame(Y,X_power_matrix)
-
+Y <- beta0 + beta1*X + beta2*X^2 + beta3*X^3 + epsilon
+dataset <- data.frame(Y,X,X^2,X^3,X^4,X^5,X^6,X^7,X^8,X^9,X^10)
 regfit <-regsubsets(Y~.,data=dataset,nvmax=10)
 reg.summary <- summary(regfit)
+cat("Cp and AIC:")
+
+# AIC is equivalent to C p (see the lecture)
+print(reg.summary$cp)
+cat("BIC:")
+print(reg.summary$bic)
+cat("AdjR2:")
+print(reg.summary$adjr2)
+cat("Minima:")
+print(c(which.min(reg.summary$cp),
+        which.min(reg.summary$bic),
+        which.max(reg.summary$adjr2)))
 plot(1:10,reg.summary$bic,type="l")
+
+regfit.fwd <- regsubsets(Salary~.,data=Hitters,nvmax=19,method="forward")
+summary(regfit.fwd)
