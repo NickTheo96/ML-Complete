@@ -1,0 +1,1 @@
+data <- as.matrix(read.csv("Advertising.csv",header=TRUE))   
