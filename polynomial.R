@@ -23,41 +23,42 @@ testLabels <- matrix(data[(trainlength+1):number_of_observations,number_of_attri
 K_matrix=matrix(0, nrow = trainlength, ncol= trainlength)
 
 for(k in 1:trainlength)
+{
+  for(j in 1:trainlength)
   {
-    for(j in 1:trainlength)
-      {
-      for(i in 1:dim(trainObjects)[2])
-        {
-          K_matrix[j,k] = K_matrix[j,k] + trainObjects[j,i]*trainObjects[k,i]#finds the dot product of each element
-        }
-      K_matrix[j,k] = (K_matrix[j,k] +1)^2
-      }
+    for(i in 1:dim(trainObjects)[2])
+    {
+      K_matrix[j,k] = K_matrix[j,k] + trainObjects[j,i]*trainObjects[k,i]#finds the dot product of each element
+    }
+    K_matrix[j,k] = (K_matrix[j,k] +1)^2
+  }
 }
 
 K_matrix_normalised=matrix(0, nrow = trainlength, ncol= trainlength)#need a new matrix otherwise the elements would update
 #during the loop
 
 for(k in 1:trainlength)#normalise the matrix in seperate loop after all the elements have been computed
+{
+  for(j in 1:trainlength)
   {
-    for(j in 1:trainlength)
-    {
-      K_matrix_normalised[j,k] = K_matrix[j,k]/(sqrt(K_matrix[j,j])*sqrt(K_matrix[k,k]))
-    }
+    K_matrix_normalised[j,k] = K_matrix[j,k]/(sqrt(K_matrix[j,j])*sqrt(K_matrix[k,k]))
+  }
 }
 
 #create a matrix k so that the ith column can later be used to find the expected value of y for each test object
 k_matrix=matrix(0, nrow = trainlength, ncol= testlength)
 
 for(k in 1:testlength)
+{
+  for(j in 1:trainlength)
   {
-    for(j in 1:trainlength)
-      {
-        for(i in 1:dim(trainObjects)[2])
-          {
-            k_matrix[j,k]=k_matrix[j,k] + trainObjects[j,i]*testObjects[k,i]#creates un-normalised k matrix
-          }
-      }
+    for(i in 1:dim(trainObjects)[2])
+    {
+      k_matrix[j,k]=k_matrix[j,k] + trainObjects[j,i]*testObjects[k,i]#creates un-normalised k matrix
+    }
+    k_matrix[j,k] = (k_matrix[j,k] +1)^2
   }
+}
 
 #create dot product of train objects for normalisation
 K_dot=matrix(0, nrow = trainlength, ncol= 1)
@@ -88,19 +89,30 @@ for(j in 1:testlength)
 k_matrix_normalised=matrix(0, nrow = trainlength, ncol= testlength)
 
 for(k in 1:testlength)
+{
+  for(j in 1:trainlength)
   {
-    for(j in 1:trainlength)
-      {
-      k_matrix_normalised[j,k]= k_matrix[j,k]/(sqrt(K_dot[j])*sqrt(k_dot[k]))
-      }
+    k_matrix_normalised[j,k]= k_matrix[j,k]/(sqrt(K_dot[j])*sqrt(k_dot[k]))
   }
+}
 
-lambda_matrix = diag(trainlength)
+lambda_matrix = diag(x=1,trainlength)
+#lambda_matrix=matrix(0, nrow = trainlength, ncol= trainlength)
 
 for(i in 1:testlength)
-  {
-    predicted.Y[i] = trainLabels %*% solve(lambda_matrix + K_matrix_normalised) %*% k_matrix_normalised[,i]
-  }
-#test 2
+{
+  predicted.Y[i] = trainLabels %*% solve(lambda_matrix + K_matrix) %*% k_matrix[,i]
+}
+
+MSE=0
+
+for(i in 1:testlength)
+{
+  MSE = MSE+ (predicted.Y[i]-testLabels[i])^2
+} 
+MSE=MSE/testlength
+
+
+
 
 
