@@ -101,6 +101,6 @@ for(i in 1:testlength)
   {
     predicted.Y[i] = trainLabels %*% solve(lambda_matrix + K_matrix_normalised) %*% k_matrix_normalised[,i]
   }
-#test
+#test 2
 
 
