@@ -20,19 +20,44 @@ testLabels <- matrix(data[(trainlength+1):number_of_observations,number_of_attri
 #3 create the k matrix which is a collection of all the ith k vectors corresponding to the ith column of the matrix
 #4 normalise the k matrix
 
-K_matrix=matrix(0, nrow = trainlength, ncol= trainlength)
 
-for(k in 1:trainlength)
-{
-  for(j in 1:trainlength)
+
+polynomial_kernal <- function(x, x_prime, number_of_attributes)#function that initialised a matrix with the correct dimension and returns the polynomial kernel
   {
-    for(i in 1:dim(trainObjects)[2])
-    {
-      K_matrix[j,k] = K_matrix[j,k] + trainObjects[j,i]*trainObjects[k,i]#finds the dot product of each element
-    }
-    K_matrix[j,k] = (K_matrix[j,k] +1)^2
+    matrix=matrix(0, nrow = trainlength, ncol= number_of_attributes)#initialize matrix
+      for(k in 1:number_of_attributes)
+        {
+          for(j in 1:trainlength)
+            {
+              for(i in 1:dim(trainObjects)[2])
+                {
+                    matrix[j,k] = matrix[j,k] + x[j,i]*x_prime[k,i]#finds the dot product of each element
+                }
+                  matrix[j,k] = (matrix[j,k] +1)^2#creates the kernel matrix element by element
+            }
+        }
+      return(matrix)#returns the kernel matrix
   }
-}
+
+# K_matrix <- polynomial_kernal(trainObjects,trainObjects,trainlength)
+# k_matrix <- polynomial_kernal(trainObjects,testObjects,testlength)
+# 
+# same_attribute_kernel <- function(x, x_prime, number_of_attributes)
+# {
+#   matrix=matrix(0, nrow = trainlength, ncol= number_of_attributes)#initialize matrix
+#   for(j in 1:number_of_attributes)
+#   {
+#     for(i in 1:dim(trainObjects)[2])
+#     {
+#       K_dot[j]=K_dot[j]+ x[j,i]*x_prime[j,i]
+#     }
+#     K_dot[j]=(K_dot[j]+1)^2
+#   } 
+#   return(matrix)#returns the kernel matrix
+# }
+#   
+# K_matrix_x <- same_attribute_kernel(trainObjects,trainObjects,trainlength)
+# K_matrix_x_prime <- same_attribute_kernel(trainObjects,trainObjects,trainlength)
 
 K_matrix_normalised=matrix(0, nrow = trainlength, ncol= trainlength)#need a new matrix otherwise the elements would update
 #during the loop
@@ -45,20 +70,6 @@ for(k in 1:trainlength)#normalise the matrix in seperate loop after all the elem
   }
 }
 
-#create a matrix k so that the ith column can later be used to find the expected value of y for each test object
-k_matrix=matrix(0, nrow = trainlength, ncol= testlength)
-
-for(k in 1:testlength)
-{
-  for(j in 1:trainlength)
-  {
-    for(i in 1:dim(trainObjects)[2])
-    {
-      k_matrix[j,k]=k_matrix[j,k] + trainObjects[j,i]*testObjects[k,i]#creates un-normalised k matrix
-    }
-    k_matrix[j,k] = (k_matrix[j,k] +1)^2
-  }
-}
 
 #create dot product of train objects for normalisation
 K_dot=matrix(0, nrow = trainlength, ncol= 1)
@@ -69,6 +80,7 @@ for(j in 1:trainlength)
   {
     K_dot[j]=K_dot[j]+ trainObjects[j,i]*trainObjects[j,i]
   }
+  K_dot[j]=(K_dot[j]+1)^2
 }
 
 
@@ -82,6 +94,7 @@ for(j in 1:testlength)
   {
     k_dot[j]=k_dot[j]+ testObjects[j,i]*testObjects[j,i]
   }
+  k_dot[j]=(k_dot[j]+1)^2
 }
 
 
