@@ -1,0 +1,154 @@
+
+R version 3.5.0 (2018-04-23) -- "Joy in Playing"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[R.app GUI 1.70 (7521) x86_64-apple-darwin15.6.0]
+
+[Workspace restored from /Users/nick/.RData]
+[History restored from /Users/nick/.Rapp.history]
+
+> A <- matrix (1:16,4,4)
+> A
+     [,1] [,2] [,3] [,4]
+[1,]    1    5    9   13
+[2,]    2    6   10   14
+[3,]    3    7   11   15
+[4,]    4    8   12   16
+> dim(A)
+[1] 4 4
+> getwd()
+[1] "/Users/nick"
+> set wd("/Users/nick/R/Project1")
+Error: unexpected symbol in "set wd"
+> setwd("/Users/nick/R/Project1")
+Error in setwd("/Users/nick/R/Project1") : 
+  cannot change working directory
+> setwd("/Users/nick/R/Project 1")
+> Auto <- read.table("Auto.data")
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'Auto.data': No such file or directory
+> Auto <- read.table("Auto.data.txt")
+> fix(Auto)
+Error in check_for_XQuartz() : 
+  X11 library is missing: install XQuartz from xquartz.macosforge.org
+> fix(Auto)
+> Auto <- read.table("Auto.data.txt", header=T,na.strings='?')
+> fix(Auto)
+> dim(Auto)
+[1] 397   9
+> Auto <- na.omit(Auto)
+> dim(Auto)
+[1] 392   9
+> names(Auto)
+[1] "mpg"          "cylinders"    "displacement" "horsepower"   "weight"       "acceleration"
+[7] "year"         "origin"       "name"        
+> for (i in 1:4) print(i^2)
+[1] 1
+[1] 4
+[1] 9
+[1] 16
+> if (2>0) {}
+NULL
+> if (2>0) {}
+NULL
+> if (2>0) { + i<-2 + print(i)}}
+Error: unexpected '}' in "if (2>0) { + i<-2 + print(i)}}"
+> if (2>0) { + i<-2 + print(i)}
+[1] 4
+Error in +i <- 2 + print(i) : could not find function "+<-"
+> if (2>0) { i<-2 + print(i)}
+[1] 4
+> if (2>0) { i<-2  print(i)}
+Error: unexpected symbol in "if (2>0) { i<-2  print"
+> if (2>0) { i<-2 + print(i)}
+[1] 6
+> source("script.R")
+[1] 2
+> names(Auto)
+[1] "mpg"          "cylinders"    "displacement" "horsepower"   "weight"       "acceleration"
+[7] "year"         "origin"       "name"        
+> fix(Auto)
+> range(Auto)
+Error in FUN(X[[i]], ...) : 
+  only defined on a data frame with all numeric variables
+> range("mpg")
+[1] "mpg" "mpg"
+> help('range')
+starting httpd help server ... done
+> range(Auto)
+Error in FUN(X[[i]], ...) : 
+  only defined on a data frame with all numeric variables
+> range(Auto[1])
+[1]  9.0 46.6
+> fix(Auto)
+> range(Auto[0])
+Error in FUN(X[[i]], ...) : 
+  only defined on a data frame with all numeric variables
+> range(Auto[2])
+[1] 3 8
+> fix(Auto)
+> range(Auto[3])
+[1]  68 455
+> for (i in 1:100) (x = x+i^2)
+> print x
+Error: unexpected symbol in "print x"
+> print(x)
+       [,1]   [,2]
+[1,] 338351 338353
+[2,] 338352 338354
+> for (i in 1:100) (x = x+i^2) print (x)
+Error: unexpected symbol in "for (i in 1:100) (x = x+i^2) print"
+> for (i in 1:100) (x = x+i^2) print(x)
+Error: unexpected symbol in "for (i in 1:100) (x = x+i^2) print"
+> for (i in 1:100) (x = x+i^2) 
+> print(x)
+       [,1]   [,2]
+[1,] 676701 676703
+[2,] 676702 676704
+> source(forloop.R)
+Error in source(forloop.R) : object 'forloop.R' not found
+> source(forloop.R)
+Error in source(forloop.R) : object 'forloop.R' not found
+> source(forloop.R)
+Error in source(forloop.R) : object 'forloop.R' not found
+> getwd()
+[1] "/Users/nick/R/Project 1"
+> source(forloop.R)
+Error in source(forloop.R) : object 'forloop.R' not found
+> source(forloop.R)
+Error in source(forloop.R) : object 'forloop.R' not found
+> source(forloop.R)
+Error in source(forloop.R) : object 'forloop.R' not found
+> Source(forloop.R)
+Error in Source(forloop.R) : could not find function "Source"
+> source("forloop.R")
+        [,1]    [,2]
+[1,] 1015051 1015053
+[2,] 1015052 1015054
+> source("forloop.R")
+[1] 338350
+> source("forloop.R")
+[1] 338350
+> source("forloop.R")
+[1] 338350
+> source("forloop.R")
+[1] 338350
+objc[743]: Class FIFinderSyncExtensionHost is implemented in both /System/Library/PrivateFrameworks/FinderKit.framework/Versions/A/FinderKit (0x7fff8648dc90) and /System/Library/PrivateFrameworks/FileProvider.framework/OverrideBundles/FinderSyncCollaborationFileProviderOverride.bundle/Contents/MacOS/FinderSyncCollaborationFileProviderOverride (0x10ce6fcd8). One of the two will be used. Which one is undefined.
+> 
