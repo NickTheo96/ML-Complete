@@ -6,7 +6,7 @@ These are a collection of code created from the labs mainly kept on here for boo
 
 * Week 1: Introduction to machine learning and to R
 * Week 2: Nearest Neighbours and k-Nearest Neighbours 
-* Week 3: Linear regression: simple and multiple linear regression as well as interaction terms, functions in R, accuracy of model -RSE and R^2 static
+* Week 3: Linear regression: simple and multiple linear regression, interaction terms, accuracy of model -RSE and R^2 static
 * Week 4: Polynomial regression
 * Week 5: Discriminant Analysis: Implementing LDA and QDA, ROC curve analysis
 * Week 6: Model selection: Forward and backward stepwise selection
