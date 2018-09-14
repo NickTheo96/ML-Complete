@@ -8,29 +8,22 @@ ionosphere.txt contains data collected by a radar system in Goose Bay, Labrador.
 
 USPS.txt contains normalized handwritten digits, automatically scanned from envelopes by the US Postal Service. USPSsubset.txt is its subset. The original scanned digits are binary and of different sizes and orientations however, the images have been deslanted and size normalized, resulting in 16 * 16 grayscale images. The datasets are in two seperate files with each row consisting of the 256 grayscale values for the pixels followed by the true label 0-9. The data set consisted of two parts, 7291 training observations and 2007 test observations merged into the file USPS.txt. My knn algorithm correctly outputed a 10 x 10 confusion matrix identical to the knn function in R (albeit at a much slower rate).
 
+## How to run the file ##
+to run the algorithm for a given dataset, simply change the dataset that is read in on line 9 to the desired text file and the trainlength on line 12 to the desired number and run the code. The confusion matrix variable is what is outputted.
+
 ## Description of the file structure ##
 
-The Data_In folder contains 3 files: the train data in train.CSV, the test data in test.CSV and a description of the attributes in data_description.text. The final column in train.CSV contains the target attribute: 'SalePrice' which is what was predicted on the test data using a Lasso model. The Data_Out folder contains output CSV files of the models with various parameters and Plots contains examples of some of the plots produced. Main.py is where the other four classes 
- * DataLoader within Class_Data_Loader.py
- * DataExploration within Class_Data_Exploration.py
- * DataPreprocessing within Class_Data_Preprocessing.py
- * DataModel within Class_Data_Model.py
+The datasets are:
+ * iris.txt
+ * ionosphere.txt
+ * USPS.txt
+ * USPSsubset.txt
  
- are called and executed. Class_Data_Loader loads the data into a Pandas dataframe. Class_Data_Exploration contains methods that produce plots such as scatter graphs, histograms and box and whisker diagrams. The purpose of this class is to deal with outliers and missing data. The method missing_data_ratio_and_bar_graph() is useful to see the percentage of missing values for each attribute which can be dealt with accordingly using the class DataPreprocessing. The class DataPreprocessing modifies both the test and train data using methods that fill in the missing values for both data sets. The data is then transformed using a Box Cox  transformation and normalised. The class DataModel can then be used to implement a method such as linear  regression or a Lasso to return the predicted value of the target for each test sample.
- 
-The code was written in such a way that it would be possible to make a quick model on any data in a CSV file by first loading it into a pandas dataframe, explore the data, preprocess the data and then feed it into a model that will produce an accurate outcome. This was done by using inheritance where DataModel -> DataPreprocessing -> DataExploration -> DataLoader and the arrow  is a symbol indicating 'inherited from'. 
+The knn algorithm can be run by running nn.R by specifying the desired dataset that will be used within the nn.R file itself as specified above.
 
-This was done so that if one only wanted to only explore the data, only the functions within the class DataExploration DataLoader are available when an object is constructed using DataExploration. If a model is to be fitted then DataModel can be called to create an object where none of the data hasn't been tampered with If inheritance wasn't used then it would be more difficult to keep track of how the test and train data were modified. 
-
-Full documentation of the methods within the classes will be added at a later date.
-
-## Packages Required: ##
-Environment set up in python 3.5 and runs with following packages:
-* numpy        V:1.14.5
-* pandas       V:0.23.4
-* matplotlib   V:2.2.3
-* scikit-learn V:0.19.2
+## Library Required: ##
+* class (to run the built in knn function in R to compare results with my code)
 <p>
 
 ## Examples ##
-Examples of how to run the code will be added at a later date.
+An example of how to run the code is included in nn.R for the ionosphere dataset.
