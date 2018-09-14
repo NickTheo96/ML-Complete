@@ -6,10 +6,10 @@
 # setwd("/Users/nick/R/Assignment1")
 
 #Load in the data set, no header, na strings just incase there are missing values
-dataset <- read.csv("iris.txt",header=F, na.strings="?")
+dataset <- read.csv("ionosphere.txt",header=F, na.strings="?")
 #dataset <- read.table("USPSsubset.txt",header=F, na.strings="?")
 
-trainlength =70#this must be specified by the user
+trainlength =200#this must be specified by the user
 #Initialise the values 
 number_of_attributes = dim(dataset)[2]-1
 EuclidSqSum=0
