@@ -1,0 +1,43 @@
+x <- c(1,6,2)
+x
+x <- c(1,)
+?c
+y <-(1,4,3)
+y <- (1,4,3)
+y <- c(1,4,3)
+x+y
+length (y)
+ls()
+rm(x,y)
+?matrix
+matrix(data=c(1,2,3,4), nrow=2, ncol=2)
+matrix(data=c(1,2,3,4), 2, 2)
+x <- matrix(data=c(1,2,3,4), 2, 2)
+y <- matrix(data=c(0,3,2,1), 2, 2)
+x %*% y
+x*y
+sqrt (x)
+A <- matrix (1:16,4,,4)
+A
+A[2,3]
+A <- matrix (1:16,4,4)
+A[2,3]
+A[c(1,3),c(2,4)]
+A[1:3,2:4]
+source("normalisation.R")
+setwd("/Users/nick/R/week2")
+USPS <- read.table("USPS.txt")
+minimum <- min(USPS[1,1:256])
+maximum <- max(USPS[1,1:256])
+first.image <- (USPS[1,1:256]-minimum) / (maximum-minimum)
+first,image
+first.image
+fix(first.image)
+dim(first.image)
+min(2,3)
+data <- read.table("USPSsubset.txt")
+dim(data)
+source("tangent.R")
+source("tangent.R")
+source("tangent.R")
+source("tangent.R")
